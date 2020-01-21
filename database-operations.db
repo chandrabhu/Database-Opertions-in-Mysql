@@ -29,9 +29,31 @@ $sql = "SELECT a.* , b.*, c.*
         INNER JOIN investment_scheme AS c
         ON a.scheme_id= c.scheme_id
         AND a.investment_terms = 'RI'";
-				
+	
+//INNER JOIN Operations PDO
+# a.name AS author_name, a.awards, b.name AS book_name
+$sql = "SELECT * FROM authors AS a INNER JOIN books AS b ON(a.id = b.author_id)";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$authors = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+//Union Operations USING Left and Right Join 
+$sql = "SELECT * FROM authors AS a LEFT JOIN books AS b ON(a.id = b.author_id)
+             UNION ALL 
+	SELECT a.name AS author_name, a.awards, b.name AS book_name 
+	RIGHT JOIN books AS b ON(a.id = b.author_id)";		
+	
+//SELF JOIN 
+SELECT b1.name, b1.sold_by  FROM 'books' b1 JOIN books b2 ON b1.sold_by = b2.sold_by 
+
+//Stored procedure
+#getAuthors stored Authors Details
+CALL 'getAuthors'();
+
+	
 //Delete Opertions in DB
- $sql = "DELETE FROM tasks
-         WHERE task_id = '".$task_id."'";
+ $sql = "DELETE FROM tasks WHERE task_id = '".$task_id."'";
+	 
 
 
